@@ -22,3 +22,5 @@ shell:
 	docker compose -f docker-compose.dev.yml exec -u laravel notification-service /bin/sh
 shell-db:
 	docker compose -f docker-compose.dev.yml exec postgres psql -U postgres -d postgres
+seed:
+	docker compose -f docker-compose.dev.yml exec notification-service php artisan db:seed
