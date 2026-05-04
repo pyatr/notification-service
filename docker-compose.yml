@@ -1,0 +1,59 @@
+name: notification-service
+
+services:
+  notification-service:
+    container_name: notification-service
+    build:
+      dockerfile: build/laravel/Dockerfile
+      target: production
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    restart: always
+    environment:
+      UID: ${UID:-1000}
+      GID: ${GID:-1000}
+    user: ${UID:-1000}:${GID:-1000}
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - notification_service
+
+  nginx:
+    build:
+      dockerfile: build/nginx/Dockerfile
+    restart: always
+    depends_on:
+      - notification-service
+    networks:
+      - notification_service
+    
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - notification_service
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - notification_service
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+networks:
+  notification_service:
