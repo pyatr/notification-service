@@ -28,4 +28,5 @@ phpstan:
 	docker compose -f docker-compose.dev.yml exec notification-service vendor/bin/phpstan
 pint:
 	docker compose -f docker-compose.dev.yml exec notification-service vendor/bin/pint
-
+run-tests:
+	docker compose -f docker-compose.dev.yml exec notification-service php artisan test

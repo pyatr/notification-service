@@ -5,7 +5,6 @@ parameters:
         - config/
         - database/migrations/
         - routes/
-        - tests/
     excludePaths:
         - bootstrap/cache/
         - storage/
