@@ -38,9 +38,8 @@ class NotificationController extends Controller
 
     public function getUserNotifications(User $user, ViewUserNotifications $viewUserNotifications): JsonResponse
     {
-        $query = Notification::query()
-            ->select(['id', 'text', 'channel', 'status', 'created_at'])
-            ->where(['user_id' => $user->id]);
+        $query = $user->notifications()
+            ->select(['id', 'text', 'channel', 'status', 'created_at']);
         $channel = $viewUserNotifications->input('channel');
         $status = $viewUserNotifications->input('status');
 
