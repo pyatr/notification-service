@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Enums\NotificationChannel;
 use App\Enums\NotificationStatus;
 use App\Models\Notification;
+use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -32,14 +33,20 @@ class SendNotification implements ShouldQueue
     public function handle(): void
     {
         try {
+            /**
+             * @var User
+             */
+            $user = $this->notification->user;
+
             switch ($this->notification->channel) {
                 case NotificationChannel::EMail->value:
-                    Mail::to($this->notification->user)->send((new Mailable())->view('mail', ['text' => $this->notification->text]));
+                    Mail::to($user)->send((new Mailable())->view('mail', ['text' => $this->notification->text]));
 
                     break;
                 case NotificationChannel::Telegram->value:
+
                     Telegram::sendMessage([
-                        'chat_id' => $this->notification->user->chat_id,
+                        'chat_id' => $user->chat_id,
                         'text' => $this->notification->text,
                     ]);
 

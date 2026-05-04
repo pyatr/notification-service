@@ -69,6 +69,8 @@ COPY --chown=laravel:laravel ./routes routes/
 COPY --chown=laravel:laravel ./database database/
 COPY --chown=laravel:laravel ./app app/
 COPY --chown=laravel:laravel crontab /etc/crontab/laravel
+# Settings from this folder are loaded automatically to override
+COPY --chown=laravel:laravel ./build/laravel/php.ini /usr/local/etc/php/php.ini
 
 # Create log and PID folder for supervisor. It does not create any of its folders
 RUN mkdir -m 750 -p \
