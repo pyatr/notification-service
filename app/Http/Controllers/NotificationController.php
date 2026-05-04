@@ -8,7 +8,6 @@ use App\Jobs\SendNotification;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {

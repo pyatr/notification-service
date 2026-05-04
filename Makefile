@@ -24,3 +24,8 @@ shell-db:
 	docker compose -f docker-compose.dev.yml exec postgres psql -U postgres -d postgres
 seed:
 	docker compose -f docker-compose.dev.yml exec notification-service php artisan db:seed
+phpstan:
+	docker compose -f docker-compose.dev.yml exec notification-service vendor/bin/phpstan
+pint:
+	docker compose -f docker-compose.dev.yml exec notification-service vendor/bin/pint
+

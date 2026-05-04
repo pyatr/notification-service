@@ -24,7 +24,7 @@ class SendNotificationRequest extends FormRequest
             ],
             'user_id' => [
                 'required',
-                'exists:users,id'
+                'exists:users,id',
             ],
             'channel' => [
                 'required',

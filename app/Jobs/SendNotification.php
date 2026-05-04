@@ -10,22 +10,21 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Support\Facades\Mail;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 #[Backoff([1, 5, 10, 20, 30, 60])]
 class SendNotification implements ShouldQueue
 {
     public int $tries = 0;
+
     use Queueable;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(protected Notification $notification)
-    {
-    }
+    public function __construct(protected Notification $notification) {}
 
     /**
      * Execute the job.
@@ -40,7 +39,7 @@ class SendNotification implements ShouldQueue
 
             switch ($this->notification->channel) {
                 case NotificationChannel::EMail->value:
-                    Mail::to($user)->send((new Mailable())->view('mail', ['text' => $this->notification->text]));
+                    Mail::to($user)->send((new Mailable)->view('mail', ['text' => $this->notification->text]));
 
                     break;
                 case NotificationChannel::Telegram->value:
