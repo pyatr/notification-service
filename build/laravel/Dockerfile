@@ -80,15 +80,15 @@ RUN mkdir -m 750 -p \
 
 COPY --chown=laravel:laravel --from=composer:2.9.3 /usr/bin/composer /usr/bin/composer
 
-ENTRYPOINT ["supervisord", "-c", "/home/laravel/etc/supervisor.d/supervisord.ini"]
-
 
 FROM laravel AS development
 COPY --chown=laravel:laravel supervisord.dev.ini /home/laravel/etc/supervisor.d/supervisord.ini
 COPY --chown=laravel:laravel start-dev.sh start.sh
-RUN chmod +x start.sh
+COPY --chown=laravel:laravel pre-start.sh pre-start.sh
+RUN chmod +x pre-start.sh && \
+    chmod +x start.sh
 USER laravel:laravel
-
+CMD ["sh", "/var/www/html/pre-start.sh"]
 
 FROM laravel AS production
 COPY --chown=laravel:laravel supervisord.ini /home/laravel/etc/supervisor.d/supervisord.ini
@@ -102,3 +102,4 @@ RUN composer install --optimize-autoloader --no-interaction --no-dev && \
     php artisan config:clear && \
     php artisan config:cache && \
     php artisan storage:link
+CMD ["supervisord", "-c", "/home/laravel/etc/supervisor.d/supervisord.ini"]
