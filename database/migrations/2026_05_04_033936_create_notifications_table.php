@@ -13,7 +13,7 @@ return new class extends Migration {
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->text('text');
+            $table->string('text', 512);
             $table->enum('status', ['pending', 'sent', 'error'])->default('pending');
             $table->enum('channel', ['email', 'telegram'])->default('email');
             $table->foreignIdFor(User::class);
