@@ -43,7 +43,6 @@ class SendNotification implements ShouldQueue
 
                     break;
                 case NotificationChannel::Telegram->value:
-
                     Telegram::sendMessage([
                         'chat_id' => $user->chat_id,
                         'text' => $this->notification->text,
